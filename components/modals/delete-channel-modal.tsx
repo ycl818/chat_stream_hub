@@ -1,4 +1,5 @@
 "use client";
+import qs from "query-string";
 import axios from "axios";
 import {
   Dialog,
@@ -26,11 +27,17 @@ export const DeleteChannelModal = () => {
   const onClick = async () => {
     try {
       setIsLoading(true);
+      const url = qs.stringifyUrl({
+        url: `/api/channels/${channel?.id}`,
+        query: {
+          serverId: server?.id,
+        },
+      });
 
-      await axios.delete(`/api/servers/${server?.id}`);
+      await axios.delete(url);
       onClose();
       router.refresh();
-      router.push("/");
+      router.push(`/servers/${server?.id}`);
     } catch (error) {
       console.log(error);
     } finally {
