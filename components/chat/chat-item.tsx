@@ -56,7 +56,6 @@ export const ChatItem = ({
   socketQuery,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
   const { onOpen } = useModal();
   const params = useParams();
   const router = useRouter();
@@ -78,7 +77,7 @@ export const ChatItem = ({
 
     window.addEventListener("keydown", handleKeyDown);
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keyDown", handleKeyDown);
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -90,7 +89,6 @@ export const ChatItem = ({
 
   const isLoading = form.formState.isSubmitting;
 
-  // Edit message
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
@@ -99,6 +97,7 @@ export const ChatItem = ({
       });
 
       await axios.patch(url, values);
+
       form.reset();
       setIsEditing(false);
     } catch (error) {
@@ -116,7 +115,7 @@ export const ChatItem = ({
 
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
-  const isOwner = (currentMember.id = member.id);
+  const isOwner = currentMember.id === member.id;
   const canDeleteMessage = !deleted && (isAdmin || isModerator || isOwner);
   const canEditMessage = !deleted && isOwner && !fileUrl;
   const isPDF = fileType === "pdf" && fileUrl;
