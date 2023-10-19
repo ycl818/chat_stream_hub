@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import { EmojiPicker } from "@/components/emoji-picker";
+import { useEffect } from "react";
 
 interface ChatInputProps {
   apiUrl: string;
@@ -35,7 +36,7 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
     },
   });
 
-  const isLoading = form.formState.isSubmitting;
+  let isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -52,6 +53,12 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (form.formState.isSubmitting) {
+      form.reset(); // Reset the form when the submission is successful
+    }
+  }, [form.formState.isSubmitting]);
 
   return (
     <Form {...form}>
@@ -71,7 +78,7 @@ export const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
                     <Plus className="text-white dark:text-[#313338]" />
                   </button>
                   <Input
-                    disabled={isLoading}
+                    disabled={isLoading} // Set the disabled prop based on the isLoading variable
                     className="px-14 py-6 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
                     placeholder={`Message ${
                       type === "conversation" ? name : "#" + name
