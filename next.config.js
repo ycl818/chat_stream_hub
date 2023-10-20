@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  swcMinify: false,
   webpack: (config) => {
     config.externals.push({
       "utf-8-validate": "commonjs utf-8-validate",
@@ -9,6 +8,7 @@ const nextConfig = {
 
     return config;
   },
+  swcMinify: false,
   images: {
     domains: ["uploadthing.com", "utfs.io"],
   },
