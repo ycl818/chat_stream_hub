@@ -1,17 +1,16 @@
 import { redirect } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 
-import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Separator } from "@/components/ui/separator";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 
-import { NavigationItem } from "./navigation-item";
 import { NavigationAction } from "./navigation-action";
-import { UserButton } from "@clerk/nextjs";
+import { NavigationItem } from "./navigation-item";
 
-// be a server component
-const NavigationSidebar = async () => {
+export const NavigationSidebar = async () => {
   const profile = await currentProfile();
 
   if (!profile) {
@@ -57,5 +56,3 @@ const NavigationSidebar = async () => {
     </div>
   );
 };
-
-export default NavigationSidebar;

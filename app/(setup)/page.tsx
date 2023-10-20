@@ -1,20 +1,20 @@
-import { InitialModal } from "@/components/modals/initial-modal";
+import { redirect } from "next/navigation";
+
 import { db } from "@/lib/db";
 import { initialProfile } from "@/lib/initial-profile";
-import { redirect } from "next/navigation";
+import { InitialModal } from "@/components/modals/initial-modal";
 
 const SetupPage = async () => {
   const profile = await initialProfile();
 
-  // find this person in which server
   const server = await db.server.findFirst({
     where: {
       members: {
         some: {
-          profileId: profile.id,
-        },
-      },
-    },
+          profileId: profile.id
+        }
+      }
+    }
   });
 
   if (server) {
@@ -22,6 +22,6 @@ const SetupPage = async () => {
   }
 
   return <InitialModal />;
-};
-
+}
+ 
 export default SetupPage;
